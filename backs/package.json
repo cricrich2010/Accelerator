@@ -1,0 +1,26 @@
+{
+  "name": "acceleratorbacks",
+  "version": "1.0.0",
+  "description": "backend for accelerator app",
+  "main": "acceleratorbacks.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cricrich2010/Accelerator.git/backs"
+  },
+  "keywords": [
+    "accelerator",
+    "trial",
+    "clinical",
+    "studies",
+    "investigator",
+    "patient"
+  ],
+  "author": "cricrich2010",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
