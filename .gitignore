@@ -107,3 +107,6 @@ dist
 #backup file
 .bkp
 .$*
+
+# draft
+install*.sh
