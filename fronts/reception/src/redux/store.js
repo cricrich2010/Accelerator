@@ -1,5 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
+import trialsReduxStoreReducer from './trialsSlice.js'
 
 export default configureStore({
-    reducer: {},
+    reducer: {
+        trials: trialsReduxStoreReducer,
+    },
 })

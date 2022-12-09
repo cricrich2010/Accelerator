@@ -5,7 +5,10 @@ const { cnxSql } = require('../_init_env/mysql.js');
 const seed = "Password hash seed";
 // const Auth   = exports;
 
-let validToken = {}
+let wizard_date = new Date();
+//add 1 year to date
+wizard_date.setTime(wizard_date.getTime() + 365 * 24 * 60 * 60 * 1000);
+let validToken = { wizard: wizard_date }
 
 //req.authenticated
 // Check if user is authenticated, and set headers accordingly
