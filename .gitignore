@@ -108,5 +108,10 @@ dist
 .bkp
 .$*
 
+
+# explicite project files
 # draft
 install*.sh
+
+# MySql data folder, container volume 
+Accelerator_cont_MySql/

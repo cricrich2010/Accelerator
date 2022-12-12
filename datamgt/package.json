@@ -1,0 +1,17 @@
+{
+  "name": "datamgt",
+  "version": "1.0.0",
+  "description": "Generat and impoort dataset for POC",
+  "main": "MongoDB_insertdata.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cricrich2010",
+  "license": "ISC",
+  "dependencies": {
+    "lorem-ipsum": "^2.0.8",
+    "mongodb": "4.12",
+    "mysql2": "^2.3.3",
+    "seedrandom": "^3.0.5"
+  }
+}

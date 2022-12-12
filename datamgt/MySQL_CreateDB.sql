@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS MyAccelerator;
 CREATE DATABASE IF NOT EXISTS MyAccelerator;
 
 use MyAccelerator;
@@ -36,10 +37,14 @@ CREATE TABLE Subscriptions (
 trialcode varchar(16) NOT NULL,
 role ENUM ('Admin', 'ctm', 'investigator', 'patient') not null,
 login varchar(32) NOT NULL,
+investigatorlogin varchar(32),
 PRIMARY KEY (trialcode, role, login)
 );
 
 ALTER TABLE Subscriptions ADD CONSTRAINT FK_Subscriptions_trialcode FOREIGN KEY (trialcode) REFERENCES Trials (trialcode);
 ALTER TABLE Subscriptions ADD CONSTRAINT FK_Subscriptions_rolelogin FOREIGN KEY (role, login) REFERENCES Roles (role, login);
+ALTER TABLE Subscriptions ADD CONSTRAINT FK_Subscriptions_investigator FOREIGN KEY (investigatorlogin) REFERENCES Accounts (login);
+
+
 
 
