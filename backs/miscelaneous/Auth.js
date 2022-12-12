@@ -49,23 +49,25 @@ function user_Auth(req, res, next) {
 //   let hash = Crypto.pbkdf2Sync(password, this.seed, 1000, 64, `sha512`).toString(`hex`); 
 //   return this.hash === hash; 
 // }; 
+
+
 // check user concistency request, works for all user operation: login, new user, new pass 
 function user_consistency(req, res) {
   //check query fields
   console.log(req.body)
   console.log(typeof (req.body))
-  console.log(req.body['FirstName'])
+  console.log(req.body['accountlogin'])
   console.log(req.body['Auth'])
   console.log(req.body['bidon'])
 
-  if (!(req.body['FirstName'] && req.body['Auth'])) {
+  if (!(req.body['accountlogin'] && req.body['Auth'])) {
     console.log("fields miss")
     res.status(403).statusMessage = 'Authentication failled: missing login and/or password';
     res.end()
     return false;
   }
   // check empty user
-  if (req.body['FirstName'] == "") {
+  if (req.body['accountlogin'] == "") {
     console.log("empty login")
     res.status(403).statusMessage = 'Authentication failled: missing login and/or password';
     res.end()
@@ -96,7 +98,7 @@ async function user_Login(req, res) {
   if (!user_consistency(req, res)) { return; }
 
   //check user exist and pw is valid (db has no empty userlogin empty)
-  cnxSql.cnxSql.query('select Auth, FirstName from People where FirstName = ?', [req.body['FirstName']], (err, UserAuth) => {
+  cnxSql.cnxSql.query('select password, login from accounts where login = ?', [req.body['accountlogin']], (err, UserAuth) => {
     if (err) {
       console.log(err)
       res.status(500).statusMessage = err
@@ -107,7 +109,7 @@ async function user_Login(req, res) {
       console.log(UserAuth[0])
       console.log('UserAuth[0].Auth', UserAuth[0].Auth)
 
-      // user dosn't exist
+      // user must exist
       if (UserAuth.length == 0) {
         res.status(403).statusMessage = 'Authentication failled: missing login and/or password';
         res.end
@@ -143,9 +145,9 @@ async function New_User(req, res) {
   if (!user_consistency(req, res)) { return; }
 
   //check user exist and pw is valid (db has no empty userlogin empty)
-  let UserAuth = await cnxSql.cnxSqp.query('select Auth form People where Firstname = ?', [req.body['FirstName']])
+  let UserAuth = await cnxSql.cnxSqp.query('select Auth form People where login = ?', [req.body['accountlogin']])
   console.log(UserAuth)
-  // user dosn't exist
+  // user must not exist
   if (UserAuth.length = 1) {
     res.status(403).statusMessage = 'user creation failled: user already exist';
     res.end()
@@ -154,14 +156,15 @@ async function New_User(req, res) {
 
   //create user
   let hash = Crypto.pbkdf2Sync(req.body['Auth'], this.seed, 1000, 64, `sha512`).toString(`hex`);
-  UserAuth = await cnxSql.cnxSqp.query('insert INTO People (FirstName, Auth) values (?,?)', [req.body['FirstName'], hash])
+  UserAuth = await cnxSql.cnxSqp.query('insert INTO accounts (login, email, password) values (?,?,?)', [req.body['accountlogin'], req.body['accountemail'], hash])
+  UserAuth = await cnxSql.cnxSqp.query('insert INTO Roles (login, role, status) values (?,?,?)', [req.body['accountlogin'], 'investigator', 'requested'])
 
   // generate and return token
   let UserUuid = uuid.uuidv1().toString('hex')
   // add token to valid list
   let Nowdate = Date()
   Nowdate += (2 * 60 * 1000) // add 2 mins
-  validToken.append([hash], [req.body['FirstName'], Nowdate])
+  validToken[hash] = [req.body['accountlogin'], Nowdate, 'any']
   res.status(200).json({ 'AuthToken': UserUuid });
   return;
 
