@@ -1,7 +1,7 @@
 const { expressServ, startServ } = require('./_init_env/express.js');
 // const { cnxSql } = require('./_init_env/dbutil.js');
-const { user_Auth } = require('./authentication/Auth.js');
-const { firewall } = require('./authentication/FireWall.js');
+const { user_Auth } = require('./miscellaneous/Auth.js');
+const { firewall } = require('./miscellaneous/FireWall.js');
 
 //console log the queries sreceived by the server
 function queryInLog(req, res, next) {
@@ -17,8 +17,10 @@ expressServ.use(user_Auth); //check user is authenticated
 expressServ.use(firewall); //check allowed user routes
 
 //import routes
-const { authRoutes } = require('./authentication/Auth.js');
+const { authRoutes } = require('./miscellaneous/Auth.js');
 authRoutes(expressServ)
+const { commonRoutes } = require('./miscellaneous/CommonRoutes.js');
+commonRoutes(expressServ)
 const { patientsRoutes } = require('./patients/patients.js');
 patientsRoutes(expressServ)
 const { investigatorsRoutes } = require('./investigators/investigators.js');

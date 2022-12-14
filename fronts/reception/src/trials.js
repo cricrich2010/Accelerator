@@ -1,21 +1,45 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { addTrialReduxStore, removeTrialReduxStore, clearTrialReduxStore } from './redux/trialsSlice.js'
+import { getTrialsTrialsReduxStore, getTrialsCountReduxStore } from './redux/trialsSlice.js'
 
-export function Trials() {
+export function TrialsTable() {
     // componment that display the trials list according current useur role
-    const trials = useSelector(selTrials)
+    const trials = useSelector(getTrialsTrialsReduxStore)
+    const dispatch = useDispatch()
+
+    //trial patern { id: 0, name: 'trials_fake_00', description: 'bidon trial description' }
+
+    console.log(trials);
+    console.log('obj data key :', Object.keys(trials[0]))
+    let Headers = Object.keys(trials[0])
 
 
 
-    return (""
+    return (<table className="trialslist">
+        <thead>
+            <tr>
+                {Headers.map((header) => (
+                    <th >
+                        {header}
+                    </th>
+                ))}
+            </tr>
+        </thead>
+        <tbody>
+            {trials.map((trial) => (
+                <tr >
+                    {Headers.map(header => {
+                        <td>{trial.header}</td>
+                    })}
+                </tr>
+            ))}
 
-
+        </tbody>
+    </table>
     )
 
 }
 
-
-import { useDispatch } from 'react-redux'
-import { addTrialToReduxStore } from './basketSlice'
 
 async function fetch_trials() {
     const dispatch = useDispatch()
@@ -23,12 +47,9 @@ async function fetch_trials() {
     fetch('/trials').then((resp) => { console.log(resp); return resp.json() })
         .then((data) => {
             console.log(data);
-            let CB_Sites = document.getElementById('CB_SiteList');
-            let SitesL = data.map((obj) => `<option value="${obj['Site']}" >${obj['Site']}</option> `);
-            let htmlStr = SitesL.reduce((agg, item) => agg += item);
-            CB_Sites.innerHTML = htmlStr;
-            CB_Sites.addEventListener("change", gather_Site_data);
-            gather_Site_data();
-        }).catch(() => { bidon });
+            console.log('obj data key :', Object.keys(data[0]))
+            data.map(item => dispatch(addTrialReduxStore, item))
+
+        }).catch((err) => { console.log(err) });
 
 }

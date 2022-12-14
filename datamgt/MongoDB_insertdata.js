@@ -4,12 +4,12 @@
 //import mysql
 const { exit } = require('process');
 const { cnxSql } = require('./mysql.js');
+const { mFindDoc, mAddDoc, mClearCol, createDbCol, createDbCol2 } = require('./mongodb.js')
 
 // In Node.js
 const seedrandom = require('seedrandom');
 const generator = seedrandom('[your here]');
 const randomNm = generator;
-
 
 //import { LoremIpsum } from "lorem-ipsum";
 const LoremIpsum = require("lorem-ipsum").LoremIpsum;
@@ -25,15 +25,6 @@ const lorem = new LoremIpsum({
     random: randomNm
 });
 
-
-
-
-//imort mongodb
-
-//connect mongoDB
-
-
-//query my sql
 
 
 // using promise and return query result
@@ -59,6 +50,12 @@ const queryProm = (qString, qParam) => {
 //query My data
 async function getMy_and_loadMongo() {
     console.log("RERERE wonderfull")
+    //await mClearCol().catch(err => console.log('Err while clearing Collection', err))
+    await resolveAfterSeconds(1)
+    //return
+    //await createDbCol()
+    await resolveAfterSeconds(6)
+
 
     let { data: trials, fields: ftrials } = await queryProm("select trialcode from Trials")
     console.log(trials)
@@ -92,30 +89,62 @@ async function getMy_and_loadMongo() {
         //for each note : prefer inv note for smal num
         it.noteOrder = ""
         console.log(3 / (it.nbNote + 1));
+        let objLogin
+        let objDate
+        let objInv
+        let objNote
+        let patientDoc
         for (let noNote = 0; noNote < it.nbNote; noNote++) {
             currentdate = new Date(currentdate.getTime() + Math.floor(randomNm() * 6 * 60 + 1) * 60000); // add 1 min up to 6 hours
             if (randomNm() > (3 / (it.nbNote + 1))) {
                 it.noteOrder = it.noteOrder + ",patient"
                 // add to mongo 
-                console.log('patient', it.login, currentdate, 'Message', lorem.generateSentences(Math.floor(1 + randomNm() * 5)))
+                objLogin = it.login
+                objDate = currentdate.toISOString()
+                objInv = it.investigatorlogin
+                objNote = lorem.generateSentences(Math.floor(1 + randomNm() * 5))
+                patientDoc = { login: objLogin, date: objDate, inv: objInv, note: objNote }
+                mAddDoc(patientDoc)
+                patientDoc = {}
+                patientDoc['login'] = objLogin
+                patientDoc['date'] = objDate
+                patientDoc['inv'] = objInv
+                patientDoc['note'] = objNote
+
+                //patientDoc = { login: objLogin, date: objDate, inv: objInv, note: objNote }
+                //mAddDoc(patientDoc)
+                computAdd(patientDoc)
+                mAddDoc(patientDoc)
+                console.log(doc)
+
+                //console.log('patient', patientDoc)
             } else {
                 it.noteOrder = it.noteOrder + ",INV"
                 console.log('INV', it.investigatorlogin, currentdate, 'Message', lorem.generateSentences(Math.floor(1 + randomNm() * 5)))
             }
+            console.log(typeof objLogin, typeof objDate, typeof objInv, typeof objNote)
+
         }
         console.log(it.noteOrder)
-        Math.see
+        //mFindDoc({})
+        //console.log("do you have betifull doc")
     });
-
-    //randomize nb message  by inv
-
-
-    //randomize nb message by patient
-
-    //for each add record ins mongo
     exit()
-
 }
+
+async function computAdd(patientDoc) {
+    await mAddDoc(patientDoc)
+}
+
+let doc = {
+    login: 'Pat030',
+    date: '2022-12-24T06:53:00.000Z',
+    inv: 'Inv230',
+    note: 'Eu minim sint do deserunt dolor fugiat amet. Commodo incididunt magna consectetur velit pariatur aliqua id incididunt sunt non in do officia.'
+}
+mAddDoc(doc)
+mAddDoc(doc)
+mAddDoc(doc)
 
 async function clearAndGenerateDataset() {
     //constant for data set generation
@@ -152,6 +181,15 @@ function generateUserListe(nbUser, prefixUser) {
     })
 }
 
+
+function resolveAfterSeconds(seconds) {
+    console.log("wait sec: ", seconds)
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(true);
+        }, seconds * 500);
+    });
+}
 
 getMy_and_loadMongo()
 

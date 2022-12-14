@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { Trials } from './trials.js'
+import { TrialsTable } from './trials.js'
 
 
 
@@ -19,7 +19,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>You can spend few mins to discover the ongoing trial I'm supportin
         </p>
-        <Trials className="TrialsListe" />
+        <TrialsTable className="TrialsListe" />
         <a
           className="App-link"
           href="https://reactjs.org"

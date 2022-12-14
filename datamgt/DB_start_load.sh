@@ -49,14 +49,14 @@ docker exec -e SQL_CNX=$SQL_CNX -w /tmp $MYSQL_CONT_NAME bash ini_MySql_DB.sh
 #Set env for Mongo server and share/use it with Nodejs
 #const connString = process.env.MONGODB_CONNSTRING;
 
-
+MONGO_CONT_NAME="Accelerator_cont_Mongo"
 docker stop $MONGO_CONT_NAME
 #rm -rf $MONGO_CONT_NAME
 mkdir $MONGO_CONT_NAME
 
-docker run --rm --name $MONGO_CONT_NAME -p 3022:27017 -e MONGO_INITDB_ROOT_PASSWORD=$SQL_CNX \
+docker run --rm --name $MONGO_CONT_NAME -p 3022:27017 -e MONGO_INITDB_ROOT_USERNAME=mongo -e MONGO_INITDB_ROOT_PASSWORD=$SQL_CNX \
 --mount type=bind,src=$(pwd)/$MONGO_CONT_NAME,dst=/data/db \
--d mongo:8.0
+-d mongo:6.0
 
 
 
