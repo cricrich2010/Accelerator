@@ -115,4 +115,8 @@ install*.sh
 
 # MySql data folder, container volume 
 Accelerator_cont_MySql/
+
+# Mngodb data folder, container volume 
 Accelerator_cont_Mongo/
+*.wt
+

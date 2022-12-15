@@ -10,6 +10,9 @@ const pet = { name: 'jappy2', kind: 'dog' }
 
 async function mFindDoc(query) {
     const mClient = new MongoClient(uri, { monitorCommands: true });
+    //const mConnextion = await mClient.connect(uri, 'mongo', 'Test001')
+    //mClient.connect("mongodb://localhost:3022/trials", "mongo", "Test001")
+
     try {
         const mDB = mClient.db(mDatabase);
         const patientsCol = mDB.collection(mCollection);
@@ -28,36 +31,27 @@ async function mFindDoc(query) {
 }
 
 async function mAddDoc(doc) {
-    const mClient = new MongoClient(uri, { monitorCommands: true });
+    const mClient = await connectToCluster(uri)
+    const mDB = mClient.db(mDatabase);
+    const mCol = mDB.collection(mCollection);
+    //const doc0 = { ...doc } //ensure to create a new object to avoid raise duplicate error
+    //console.log('patient doc0', doc0)
     try {
-        console.log('patient doc', doc)
-        const mDB = mClient.db(mDatabase);
-        const mCol = mDB.collection(mCollection);
-        console.log(mCol)
-        console.log("type of col: ", typeof mCol)
-        console.log(mDatabase, mCollection)
-        const doc0 = { ...doc } //ensure to create a new object to avoid raise duplicate error
-        console.log('patient doc0', doc0)
-        return await mCol.insertOne(doc0).catch((err) => { console.log("___err for mAddDoc___", err); { err: "Error when recording note" } })
+        let insertResult = await mCol.insertOne(doc) // .catch((err) => { console.log("___err for mAddDoc___", err); return { err: "Error when recording note" } })
+        console.log('__INSERT DOC___', insertResult)
+        return insertResult
+    } catch (error) {
+        console.log('err', error)
     } finally {
         await mClient.close();
     }
 }
 
-mAddDoc(pet)
-let doc = {
-    login: 'Pat230',
-    date: '2022-12-24T06:53:00.000Z',
-    inv: 'Inv000',
-    note: 'Eu minim sint do deserunt dolor fugiat amet. Commodo incididunt magna consectetur velit pariatur aliqua id incididunt sunt non in do officia.'
-}
-mAddDoc(doc)
-
 async function mDelDoc(query) {
     const mClient = new MongoClient(uri, { monitorCommands: true });
     try {
         const mDB = mClient.db(mDatabase);
-        const mCol = mDB.collection(collection);
+        const mCol = mDB.collection(mCollection);
         //let query = { name: doc };
         const cursor0 = await mCol.deleteMany(query).catch((err) => console.log("___err for mDelDoc___", err))
         console.log("Successfully deleted one document.", cursor0)
@@ -129,17 +123,6 @@ async function createDbCol() {
     }
 }
 
-async function createDbCol2() {
-    //const MongoClient = require('mongodb').MongoClient;
-    //const uri =    'mongodb+srv://dbUser:<dbpassword>@cluster0.dcu5m.mongodb.net/sample_airbnb?retryWrites=true&w=majority';
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    client.connect((err) => {
-        const collection = client.db(mDatabase).createCollection(mCollection);
-        // perform actions on the collection object
-        client.close();
-    });
-}
-
 function resolveAfterSeconds(seconds) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -148,10 +131,23 @@ function resolveAfterSeconds(seconds) {
     });
 }
 
-//const clesure = await mClient.close();
+async function connectToCluster(uri) {
+    let mongoClient;
+
+    try {
+        mongoClient = new MongoClient(uri);
+        //console.log('Connecting to MongoDB Atlas cluster...');
+        await mongoClient.connect();
+        //console.log('Successfully connected to MongoDB Atlas!');
+
+        return mongoClient;
+    } catch (error) {
+        console.error('Connection to MongoDB Atlas failed!', error);
+        process.exit();
+    }
+}
 
 module.exports.mAddDoc = mAddDoc
 module.exports.mFindDoc = mFindDoc
 module.exports.mClearCol = mClearCol
 module.exports.createDbCol = createDbCol
-module.exports.createDbCol2 = createDbCol2
