@@ -19,14 +19,16 @@ expressServ.use(firewall); //check allowed user routes
 //import routes
 const { authRoutes } = require('./miscellaneous/Auth.js');
 authRoutes(expressServ)
-const { commonRoutes } = require('./miscellaneous/CommonRoutes.js');
+const { Routes: commonRoutes } = require('./miscellaneous/CommonRoutes.js');
 commonRoutes(expressServ)
-const { patientsRoutes } = require('./patients/patients.js');
+const { Routes: patientsRoutes } = require('./patients/patients.js');
 patientsRoutes(expressServ)
-const { investigatorsRoutes } = require('./investigators/investigators.js');
+const { Routes: investigatorsRoutes } = require('./investigators/investigators.js');
 investigatorsRoutes(expressServ)
-const { ctmRoutes } = require('./ctm/ctm.js');
+const { Routes: ctmRoutes } = require('./ctm/ctm.js');
 ctmRoutes(expressServ)
+const { Routes: admRoutes } = require('./admin/admin.js');
+admRoutes(expressServ)
 
 
 

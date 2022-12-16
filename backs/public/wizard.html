@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accelerator WISARD access</title>
-    <link rel="stylesheet" href="css/site.css"/>
+    <title>Accelerator WIZARD access</title>
+    <link rel="stylesheet" href="css/wizard.css"/>
 </head>
 <body>
     <p id="loginInput">Login</p>
@@ -40,50 +40,65 @@
             
         </form>
     </div>
-    <h1>Account info</h1>
-    <div id=infoaccount style="display:flex">
+    <h2>Trials info</h2>
+    <div id=trialsinfo style="display:flex">
     
         <div>
-        <label class="siteliste" for="CB_SiteList">Select a site</label>
-        <select id="CB_SiteList" name="CB_SiteList"></select>
+        <label class="tiralsliste" for="CB_trials">Select a trial</label>
+        <select id="CB_trials" name="CB_trials"></select>
         </div>
         <div >
             <p>
-            Country: <span id="Site_Country"></span></br>
-            City: <span id="Site_City"></span></br>
-            Street: <span id="Site_Street"></span></br>
-            Size: <span id="Site_Size"></span></p>
+            <strong>trial:</strong> <span id="Trial_trial"></span></br>
+            <strong>Status:</strong> <span id="Trial_trialStatus"></span></br>
+            <strong>Description:</strong> <span id="Trial_description"></span></br>
+        </br>
+        <strong>Clinical trial manager:</strong> <span id="Trial_ctm"></span></br>
+        <strong>ctm email:</strong> <span id="Trial_ctmemail"></span></br>
+            
+
+            </p>
         </div>
         <div id="imgsite">
             <img id="TheImage" />
         </div>
-
-    </div></br></br>
-    <div id="sitelineinfo"><table id="sitelinetable" class="Sitetable"></table></div>
-</br>
-        <span>Add new production line</span>
-        <div id="NewLine">
-            <div>
-                <label for="TB_lineID">Production line prefix</label></br>
-                <span id="Line_site_header" name=""></span>
-            </div>
-            <div>
-                <label for="TB_lineID">Production line site ID</label></br>
-                <input type="text" id="TB_lineID" name="TB_lineID">
-            </div>
-            <div>
-                <label for="TB_Volume">Production line site ID</label></br>
-                <input type="number" id="TB_Volume" name="TB_Volume" value="0">
-            </div>
-            <div>
-                <button  id="BT_ADDline" name="ADD" >ADD</button>
-            </div>
+    </div>
+    </br>
+    <h3>Add new Trial</h3>
+    <div id="NewTrial">
+        <div>
+            <label for="TB_trialID">Trial ID</label></br>
+            <input type="text" id="TB_trialID" name="TB_trialID">
         </div>
+        <div>
+            <label for="TB_TrialDes">Trial Description</label></br>
+            <input type="text" id="TB_TrialDes" name="TB_TrialDes">
+        </div>
+        <div>
+            <button  id="BT_ADDTrial" name="ADD" >ADD</button>
+        </div>
+    </div>
+</br>
+    <div id="trialinv">
+        <h2>Trials investigators</h2>
+        </br>
+        <table id="trialinvestigators" class="Investigatortable"></table>
+        </br>
+        <h2>Trials pending investigators</h2>
+        </br>
+        <table id="trialpendinginvestigators" class="Investigatortable"></table>
+    </div>
 
-    <div id="LineIncidents"><table id="LigneIncidentsTable" class="Sitetable"></table></div>
+    <div id="trialinv">
+        <h2>Trials patients</h2>
+        </br>
+        <table id="trialpatients" class="Investigatortable"></table>
+        </br>
+    </div>
+
 
 
 </body>
-<script src="/js/site.js"></script>
+<script src="/js/wizard.js"></script>
 
 </html>

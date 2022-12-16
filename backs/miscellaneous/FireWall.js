@@ -14,9 +14,14 @@ const AllowedUrl = {
     '/trialpatientsaddnote': ['investigator'],
     '/trialnew': ['ctm'],
     '/trialinvestigators': ['ctm'],
-    '/acceptinvestigator': ['ctm']
-
-} // revert the logic to specify free route only
+    '/acceptinvestigator': ['ctm'],
+    '/wtrialinfo': ['any'],
+    '/wtrialinvestigators': ['any'],
+    '/wtrialinvestigatorspending': ['any'],
+    '/wNewTrial': ['any'],
+    '/wtrialpatients': ['any']
+}
+// revert the logic to specify free route only
 //think about rout access by role
 
 
@@ -32,8 +37,16 @@ function firewall(req, res, next) {
     console.log("computed url:", qUrl)
 
     let fake = 1 / 0
-    //drop request for any unknown route
-    if (!(AllowedUrl.includes(qUrl))) return
+    //drop request for any unknown route/ but annoing for debug
+    //console.log(Object.keys(AllowedUrl), 'test in', qUrl, '-->', (Object.keys(AllowedUrl).includes(qUrl)))
+    console.log('Re', 'test in', qUrl, '-->', (Object.keys(AllowedUrl).includes(qUrl)))
+    if (!(Object.keys(AllowedUrl).includes(qUrl))) {
+        console.log('Firwall rejected address', qUrl)
+        res.status(403);
+        res.statusMessage = "You are not allowed to access to this content"
+        res.end()
+        return
+    }
 
     if (AllowedUrl[qUrl].includes('any')) {
         //allowed url -> you pass
@@ -45,7 +58,7 @@ function firewall(req, res, next) {
         next()
     } else {
         // access is denied
-        console.log('firewall: url access denied')
+        console.log('firewall: url access denied', qUrl)
         res.status(403);
         res.statusMessage = "You are not allowed to access to this content"
         res.end()

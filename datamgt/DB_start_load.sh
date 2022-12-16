@@ -58,7 +58,7 @@ docker run --rm --name $MONGO_CONT_NAME -p 3022:27017 -e MONGO_INITDB_ROOT_USERN
 --mount type=bind,src=$(pwd)/$MONGO_CONT_NAME,dst=/data/db \
 -d mongo:6.0
 
-note MongoDB_insertdata.js
+node MongoDB_insertdata.js
 
 
 

@@ -1,13 +1,27 @@
 const { cnxSql } = require('../_init_env/mysql.js');
 
+function trialpatientadd(req, res) {
 
-
-
-function investigatorsRoutes(expressApp) {
-    expressApp.post('/trialpatientadd', user_Login)
-    expressApp.get('/trialpatients', New_User)
-    expressApp.post('/trialpatientaddnote', New_Passwd)
-    expressApp.post('/trialinvestigatorsubscribe', New_Passwd)
 }
 
-module.exports.investigatorsRoutes = investigatorsRoutes
+function trialpatients(req, res) {
+
+}
+
+function trialpatientaddnote(req, res) {
+
+}
+
+function trialinvestigatorsubscribe(req, res) {
+
+}
+
+
+function Routes(expressApp) {
+    expressApp.post('/trialpatientadd', trialpatientadd)
+    expressApp.get('/trialpatients', trialpatients)
+    expressApp.post('/trialpatientaddnote', trialpatientaddnote)
+    expressApp.post('/trialinvestigatorsubscribe', trialinvestigatorsubscribe)
+}
+
+module.exports.Routes = Routes

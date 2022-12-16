@@ -28,6 +28,7 @@ console.log(validTokenDic)
 
 // Check if user is authenticated, and set headers accordingly
 function user_Auth(req, res, next) {
+  console.log('req.get(AuthToken)', req.get('AuthToken'))
   //has the request an AuthToken
   if (!(req.get('AuthToken'))) {
     req['authenticated'] = false;
@@ -39,8 +40,10 @@ function user_Auth(req, res, next) {
   //is token a valid token
   if (req.get('AuthToken') in validTokenDic) {
     const reqAuthToken = validTokenList[validTokenDic[req.get('AuthToken')]]
-    if (reqAuthToken.expire > Date()) {
+    console.log('print user token', reqAuthToken.expire, new Date())
+    if (reqAuthToken.expire > new Date()) {
       req['authenticated'] = true;
+      req['accountlogin'] = reqAuthToken.accountlogin
       req['role'] = reqAuthToken.role;
       console.log('user_Auth, valid token:', req.authenticated)
       // req.set('authenticated', true);

@@ -4,7 +4,7 @@ console.log(process.env.SQL_CNX)
 let dbcon_data = {
     host: "localhost",
     database: "MyAccelerator",
-    port: 3020,
+    port: 3021,
     user: "root",
     password: process.env.SQL_CNX
 };
