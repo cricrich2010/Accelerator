@@ -19,7 +19,8 @@ const AllowedUrl = {
     '/wtrialinvestigators': ['any'],
     '/wtrialinvestigatorspending': ['any'],
     '/wNewTrial': ['any'],
-    '/wtrialpatients': ['any']
+    '/wtrialpatients': ['any'],
+    '/wpatients': ['any']
 }
 // revert the logic to specify free route only
 //think about rout access by role

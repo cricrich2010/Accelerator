@@ -23,7 +23,8 @@ function gather_trial_data() {
     Fetch_trial_desc();
     Fetch_trial_inv();
     Fetch_trial_inv_pend();
-    Fetch_trial_patients();
+    Fetch_trial_pat()
+    //Fetch_trial_patients();
 
 }
 
@@ -69,6 +70,32 @@ function Fetch_trial_inv() {
         .then((data) => {
             //console.log(data);
             let tbElement = document.getElementById('trialinvestigators');
+            //header
+            //console.log('obj data:', data)
+            //console.log('obj data 0 :', data[0])
+            //console.log('obj data key :', Object.keys(data[0]))
+            //let Headers = data[0].keys()
+            let Headers = Object.keys(data[0])
+            //console.log(Headers)
+            let htmlStrH = Headers.reduce((agg, it) => agg += `<th>${it}</th>`, "")
+            htmlStrH = `<thead><tr>${htmlStrH}</tr></thead>`
+            //rows
+            let SitesL = data.reduce((agg, obj) => agg += obj_val_to_cell_table(obj))
+            SitesL = `<tbody>${SitesL}</tbody>`
+            tbElement.innerHTML = htmlStrH + SitesL;
+            //tbElement.appendChild(sTable)
+        });
+}
+
+
+
+function Fetch_trial_pat() {
+    let CB_trials = document.getElementById('CB_trials');
+    console.log("fetch trial pat for ", CB_trials.value)
+    fetch('/wpatients?trial=' + CB_trials.value).then((resp) => { console.log(resp); return resp.json() })
+        .then((data) => {
+            //console.log(data);
+            let tbElement = document.getElementById('trialpatients');
             //header
             //console.log('obj data:', data)
             //console.log('obj data 0 :', data[0])

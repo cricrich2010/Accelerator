@@ -86,6 +86,23 @@ function wtrialinvestigatorspending(req, res) {
 
 }
 
+function wpatients(req, res) {
+    //return trial investigators
+    console.log("receive get trial patients", req.query.trial)
+    cnxSql.query(qTrialPatients, [req.query.trial], (err, data) => {
+        if (err) {
+            console.log("err get trial patients", err);
+            res.status(500);
+            res.send(err)
+        }
+        else {
+            console.log('get trial patients', data);
+            res.json(data)
+        }
+    });
+
+}
+
 async function wNewTrial(req, res) {
     //check query fieldss
     //check line exist 
@@ -131,6 +148,7 @@ function Routes(expressApp) {
     expressApp.post('/wNewTrial', wNewTrial)
     expressApp.post('/wtrialpatients', wtrialpatients)
     expressApp.get('/wtrialinvestigators', wtrialinvestigators)
+    expressApp.get('/wpatients', wpatients)
     expressApp.get('/wtrialinvestigatorspending', wtrialinvestigatorspending)
 
     //expressApp.post('/acceptinvestigator', New_Passwd)
